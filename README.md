@@ -15,7 +15,6 @@ MagicStory is a kid-friendly Next.js app that generates personalized stories and
 - Story reader page with:
   - Title, metadata badges, illustration, and readable story text
   - Empty/error/loading states
-  - Print-to-PDF button (`window.print()`)
 
 ## Tech Stack
 
@@ -40,16 +39,12 @@ Required / supported variables:
 - `GEMINI_TEXT_MODEL` (default: `gemini-flash-latest`)
 - `NANO_BANANA_MODEL` (default: `gemini-3.1-flash-image-preview`)
 
-## Recommended Node Setup
-
-This repo now includes `.nvmrc` (`24.14.0`).
+## Node Setup
 
 ```bash
 nvm use
 pnpm install
 ```
-
-If `pnpm lint` fails with a Homebrew `node` + `libsimdjson` dylib error, your shell is likely using a broken Homebrew Node binary. Use the NVM Node (`nvm use`) before running scripts.
 
 ## Scripts
 
