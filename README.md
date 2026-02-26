@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MagicStory
 
-## Getting Started
+MagicStory is a kid-friendly Next.js app that generates personalized stories and illustrations for children using the Google Gemini API.
 
-First, run the development server:
+## Features
+
+- Bright, playful landing page and creator flow
+- Story creator form with:
+  - Photo upload (drag/drop + click)
+  - Age group selector
+  - Favorite character input
+  - Story style selection cards
+- Gemini text generation (kid-safe prompting)
+- Gemini image generation (Nano Banana / image preview model) using the uploaded photo as a reference
+- Story reader page with:
+  - Title, metadata badges, illustration, and readable story text
+  - Empty/error/loading states
+  - Print-to-PDF button (`window.print()`)
+
+## Tech Stack
+
+- Next.js App Router (project currently on `Next.js 16`)
+- React 19
+- Tailwind CSS v4
+- TypeScript
+- Gemini API (text + image generation)
+
+## Environment Variables
+
+Copy `.env.local.example` to `.env.local` and set at least `GEMINI_API_KEY`.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.local.example .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Required / supported variables:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `GEMINI_API_KEY` (required unless you provide only `NANO_BANANA_API_KEY`)
+- `NANO_BANANA_API_KEY` (optional; falls back to `GEMINI_API_KEY`)
+- `GEMINI_TEXT_MODEL` (default: `gemini-flash-latest`)
+- `NANO_BANANA_MODEL` (default: `gemini-3.1-flash-image-preview`)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Recommended Node Setup
 
-## Learn More
+This repo now includes `.nvmrc` (`24.14.0`).
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+nvm use
+pnpm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+If `pnpm lint` fails with a Homebrew `node` + `libsimdjson` dylib error, your shell is likely using a broken Homebrew Node binary. Use the NVM Node (`nvm use`) before running scripts.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scripts
 
-## Deploy on Vercel
+```bash
+pnpm dev     # start local dev server
+pnpm lint    # run eslint
+pnpm build   # production build
+pnpm start   # run production server after build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Local Run Flow
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Open `/` for the landing page.
+2. Go to `/create` and fill the form.
+3. Submit to call `/api/story`.
+4. The generated response is stored in session storage and displayed on `/story`.
+
+## Notes / Limitations
+
+- The reader page currently stores the latest generated story in `sessionStorage` (per-tab/session). Closing the tab/session may clear it.
+- Production builds using `next/font/google` may require network access to fetch `Fredoka` and `Quicksand` during build.
+- In restricted/offline environments, `pnpm build` can fail because Google Fonts cannot be fetched.
+
+## API Docs Used
+
+- Gemini text generation
+- Gemini structured output
+- Gemini image generation
+
+Official docs:
+- https://ai.google.dev/gemini-api/docs/text-generation
+- https://ai.google.dev/gemini-api/docs/structured-output
+- https://ai.google.dev/gemini-api/docs/image-generation

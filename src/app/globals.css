@@ -1,26 +1,125 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fffdf4;
+  --foreground: #163047;
+  --surface: #ffffff;
+  --muted: #e7f3ff;
+  --line: #cfe6ff;
+  --yellow: #ffd84d;
+  --yellow-deep: #f5b800;
+  --sky: #60b7ff;
+  --sky-deep: #2494f2;
+  --mint: #86e8be;
+  --mint-deep: #40c98c;
+  --peach: #ffb996;
+  --ink-soft: #43607a;
+  --radius-bubble: 1.25rem;
+  --radius-pill: 999px;
+  --shadow-bubble: 0 14px 28px rgba(36, 148, 242, 0.12),
+    0 5px 12px rgba(22, 48, 71, 0.08);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-sun: var(--yellow);
+  --color-sun-deep: var(--yellow-deep);
+  --color-sky: var(--sky);
+  --color-sky-deep: var(--sky-deep);
+  --color-mint: var(--mint);
+  --color-mint-deep: var(--mint-deep);
+  --color-peach: var(--peach);
+  --color-ink-soft: var(--ink-soft);
+  --font-sans: var(--font-quicksand);
+  --font-display: var(--font-fredoka);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-quicksand), sans-serif;
+  background-image:
+    radial-gradient(circle at 12% 12%, rgba(255, 216, 77, 0.28), transparent 40%),
+    radial-gradient(circle at 88% 8%, rgba(96, 183, 255, 0.22), transparent 38%),
+    radial-gradient(circle at 70% 88%, rgba(134, 232, 190, 0.2), transparent 34%);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-fredoka), sans-serif;
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: rgba(96, 183, 255, 0.28);
+  color: var(--foreground);
+}
+
+.bubble-card {
+  border-radius: var(--radius-bubble);
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 86%, white);
+  box-shadow: var(--shadow-bubble);
+}
+
+.bubble-shadow {
+  box-shadow: var(--shadow-bubble);
+}
+
+.soft-grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(96, 183, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(96, 183, 255, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: -1px -1px;
+}
+
+.confetti-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(2px);
+  opacity: 0.85;
+  animation: bob 6s ease-in-out infinite;
+}
+
+.confetti-orb:nth-child(2n) {
+  animation-duration: 8s;
+}
+
+.confetti-orb:nth-child(3n) {
+  animation-duration: 7s;
+  animation-direction: reverse;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti-orb {
+    animation: none;
+  }
+}
+
+@media print {
+  :root {
+    --background: #ffffff;
+  }
+
+  body {
+    background: #ffffff !important;
+    background-image: none !important;
+  }
 }
